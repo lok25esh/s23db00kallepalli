@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  h1= title
+  - var results =[{unvName:"NWMSU", unvSid:"12", unvFee:2000000},{unvName:"UAB", unvSid:"22", unvFee:1500000},{unvName:"UBC ", unvSid:"30", unvFee:3000000}]
+  div(class="container-fluid")
+  div(class="row")
+   each k,index  in results 
+    div(class="col-sm-2" onclick =`buy(${index})`) #{k.unvName}, #{k.unvSid}, #{k.unvFee}
