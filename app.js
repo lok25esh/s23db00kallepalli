@@ -3,12 +3,46 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var university = require("./models/university");
+require('dotenv').config();
+const connectionString =
+process.env.MONGO_CON
+mongoose = require('mongoose');
+mongoose.connect(connectionString);
+//Get the default connection
+var db = mongoose.connection;
+//Bind connection to error event
+db.on('error', console.error.bind(console, 'MongoDB connectionserror:'));
+db.once("open", function(){
+console.log("Connection to DB succeeded")});
+// We can seed the collection if needed on server start
+async function recreateDB(){
+// Delete everything
+await university.deleteMany();
+  let instance1 = new university({ unvName: 'NWMSU', unvFee: 2000000, unvSid: 12 });
+   await instance1.save();
+    console.log('First object saved');
+    let instance2 = new university({ unvName: 'UAB', unvFee: 3000000, unvSid: 13 });
+  instance2.save().then((doc) => {
+    console.log('Second object saved');
+  });
+ 
+  let instance3 = new university({ unvName: 'UMBC', unvFee: 4000000, unvSid: 14 });
+  instance3.save().then((doc) => {
+    console.log('Third object saved');
+  });
+ 
+  };
+//Recreate 
+let reseed = true;
+if (reseed) {recreateDB();}
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var universityRouter = require('./routes/university');
 var boardRouter = require('./routes/board');
 var chooseRouter = require('./routes/choose');
+var resourceRouter = require('./routes/resource')
 var app = express();
 
 // view engine setup
@@ -26,6 +60,7 @@ app.use('/users', usersRouter);
 app.use('/university', universityRouter);
 app.use('/board', boardRouter);
 app.use('/choose', chooseRouter);
+app.use('/resource', resourceRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
