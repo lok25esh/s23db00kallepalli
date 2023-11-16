@@ -25,9 +25,16 @@ exports.university_list = async function(req, res) {
     
     
 // for a specific university.
-exports.university_detail = function(req, res) {
-res.send('NOT IMPLEMENTED: university detail: ' + req.params.id);
-};
+exports.university_detail = async function(req, res) {
+    console.log("detail" + req.params.id)
+    try {
+    result = await university.findById( req.params.id)
+    res.send(result)
+    } catch (error) {
+    res.status(500)
+    res.send(`{"error": document for id ${req.params.id} not found`);
+    }
+    };
 // Handle university create on POST.
 exports.university_create_post = async function(req, res) {
 console.log(req.body)
@@ -51,11 +58,54 @@ res.send(`{"error": ${err}}`);
 
 // Handle university create on POST.
 
+
 // Handle university delete form on DELETE.
 exports.university_delete = function(req, res) {
 res.send('NOT IMPLEMENTED: university delete DELETE ' + req.params.id);
 };
 // Handle university update form on PUT.
-exports.university_update_put = function(req, res) {
-res.send('NOT IMPLEMENTED: university update PUT' + req.params.id);
+exports.university_update_put = async function(req, res) {
+    console.log(`update on id ${req.params.id} with body
+    ${JSON.stringify(req.body)}`)
+    try {
+    let toUpdate = await university.findById( req.params.id)
+    // Do updates of properties
+    if(req.body.unvName)
+    toUpdate.unvName = req.body.unvName;
+    if(req.body.unvFee) toUpdate.unvFee = req.body.unvFee;
+    if(req.body.unvSid) toUpdate.unvSid = req.body.unvSid;
+    let result = await toUpdate.save();
+    console.log("Sucess " + result)
+    res.send(result)
+    } catch (err) {
+    res.status(500)
+    res.send(`{"error": ${err}: Update for id ${req.params.id}
+    failed`);
+    }
+    };
+    // Handle university delete on DELETE.
+exports.university_delete = async function(req, res) {
+    console.log("delete " + req.params.id)
+    try {
+    result = await university.findByIdAndDelete( req.params.id)
+    console.log("Removed " + result)
+    res.send(result)
+    } catch (err) {
+    res.status(500)
+    res.send(`{"error": Error deleting ${err}}`);
+    }
+    };
+    // Handle a show one view with id specified by query
+exports.university_view_one_Page = async function(req, res) {
+console.log("single view for id " + req.query.id)
+try{
+result = await university.findById( req.query.id)
+res.render('universitydetail',
+{ title: 'university Detail', toShow: result });
+}
+catch(err){
+res.status(500)
+res.send(`{'error': '${err}'}`);
+}
 };
+    

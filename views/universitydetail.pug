@@ -1,0 +1,20 @@
+extends layout
+block content
+ h1= title
+ - let universityid = toShow._id
+ - let unvName = toShow.unvName
+ - let unvSid = toShow.unvSid
+ - let unvFee = toShow.unvFee
+ div
+ div.row
+ div(class='universityAttr mr-3') university ID is:
+ div #{universityid}
+ div.row
+ div(class='universityAttr mr-3') University name is:
+ div #{unvName}
+ div.row
+ div(class='universityAttr mr-3') university Sid is:
+ div #{unvSid}
+ div.row
+ div(class='universityAttr mr-3') university Fee is:
+ div #{unvFee}
