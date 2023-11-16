@@ -11,4 +11,16 @@ a {
   background-color: aquamarine;
   width: 120px;
   }
+  #universityForm {
+    background-color:aqua;
+    width: 350px;
+    text-align: center;
+    color: black;
+  }
+  
+  h1{
+    color:blue;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 11px;
+  }
   
