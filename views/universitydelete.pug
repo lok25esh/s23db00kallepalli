@@ -1,0 +1,52 @@
+extends layout 
+block content 
+  h1= title 
+ 
+  if (toShow == null) 
+    h2 No instance to delete 
+  else 
+    - let universityid = toShow._id 
+    - let unvName = toShow.unvName 
+    - let unvSid = toShow.unvSid
+    - let unvFee = toShow.unvFee
+    - let actionid = "/resource/university/" + universityid 
+    script let actionid = "#{actionid}" 
+    div 
+      div.row 
+        div(class='universityAttr mr-3') university ID is: 
+        div #{universityid} 
+      div.row 
+        div(class='universityAttr mr-3') university Name is: 
+        div #{unvName} 
+      div.row 
+        div(class='universityAttr mr-3') university Sid is: 
+        div #{unvSid} 
+      div.row 
+        div(class='universityAttr mr-3') university Fee is: 
+        div #{unvFee} 
+ 
+    button(class="btn btn-danger m-2" onclick="deleteOnid()") Delete 
+    button(class="btn btn-secondary m-2" onclick="cancel()") Cancel 
+ 
+  script. 
+    function cancel() { 
+      // Go back to the home page for the Vechile collection 
+      window.location.href='/Vechile' 
+    } 
+  script. 
+    function deleteOnid() { 
+      console.log("starting delete") 
+      // delete first 
+      fetch(actionid, { 
+        method: 'DELETE'      // Dont need a body for the delete 
+      }).then((resp) => { 
+        return resp.json(); // or resp.text() or whatever the server sends 
+      }).then((body) => { 
+        alert("Delete succeded") 
+        window.location.href='/university' 
+        // TODO handle body 
+      }).catch((error) => { 
+        // TODO handle error 
+        alert("Delete failed " + error ) 
+      }); 
+    } 
