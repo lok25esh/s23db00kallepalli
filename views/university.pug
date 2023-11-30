@@ -1,21 +1,27 @@
 extends layout
 
 block content
-  h1= title
-  - var result =[{unvName:"NWMSU", unvSid:"12", unvFee:2000000},{unvName:"UAB", unvSid:"22", unvFee:1500000},{unvName:"UBC ", unvSid:"30", unvFee:3000000}]
-  div(class="container-fluid")
-  div(class="row")
-   each k,index  in results 
+    h1= title
+    button.btn.btn-primary(onClick=`dispatch(\"/university/create\")`) Create University
+    - let items = results
+    div(class="container-fluid")
+        div(class="row m-1")
+            each l,index  in results 
+                - let destination = `dispatch(\"/university/update?id=${l._id}\")`
+                - let details = `dispatch(\"/university/detail?id=${l._id}\")`
+                - let deleteItem = `dispatch(\"/university/delete?id=${l._id}\")`
+                div(class="col-sm-2 p-10 m-2" class="m-1" onClick=`buy(${i})`) 
+                    p University Name: #{l.unvName}
+                    p University Sid: #{l.unvSid}
+                    p University Fee: #{l.unvFee}
+                    div(class="row")
+                        button.btn( class="btn-info ml-1", onclick= destination) Update
+                        button.btn.btn-secondary.m-2(onclick=details) View Details
+                        button.btn.btn-danger.m-2(onclick=deleteItem) Delete
     
-     -let destination = `dispatch(\"/university/update?id=${k._id}\")`
-     div(class="row-sm-2", class="m-1")  #{k.unvName}(#{k.unvSid}) is #{k.unvFee}
-     button.btn( class="btn-primary ml-1", onclick= destination) Update
-     script.
-        function buy(a)
-        {
-            alert(`You purchased Item ${a+1}`)
-        }
+    script.
         function dispatch(path){
-        window.location.href=path
+            window.location.href=path
         }
 
+//- div(class="row-sm-2", class="m-1")  #{k.unvName}(#{k.unvSid}) is #{k.unvFee}
